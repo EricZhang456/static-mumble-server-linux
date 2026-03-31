@@ -1,0 +1,32 @@
+From ed1b7c77818da1ec72d31ddb8944d1e798f07fbe Mon Sep 17 00:00:00 2001
+From: Eric Zhang <ericzhang456@disroot.org>
+Date: Tue, 31 Mar 2026 13:20:38 +0800
+Subject: [PATCH] use qt5 for qt
+
+Signed-off-by: Eric Zhang <ericzhang456@disroot.org>
+---
+ mumble_dependencies.txt | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/mumble_dependencies.txt b/mumble_dependencies.txt
+index 3a1e30ee5d..098822a99f 100644
+--- a/mumble_dependencies.txt
++++ b/mumble_dependencies.txt
+@@ -25,10 +25,10 @@ opus
+ poco[zip,xml]
+ protobuf
+ pugixml
+-qtbase[sql-sqlite]
+-qtsvg
+-qttools
+-qttranslations
++qt5-base[mysqlplugin,postgresqlplugin]
++qt5-svg
++qt5-tools
++qt5-translations
+ soci[mysql,postgresql,sqlite3]
+ speexdsp
+ spdlog
+-- 
+2.53.0.windows.1
+

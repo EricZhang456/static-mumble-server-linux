@@ -5,9 +5,7 @@ set -e
 
 WORKING_DIR=$(pwd)
 MUMBLE_TAG="1.5.857"
-# To be used later when mumble switches to Qt6
-#MUMBLE_ENV_DATE="2025-08"
-#MUMBLE_ENV="mumble_env.x64-linux.8834a23a8e"
+MUMBLE_ENV_NAME="mumble_env.x64-linux.2026-03-31.a22c514"
 MUMBLE_ENV_TAG="2025-07_qt5"
 
 sudo apt-get -y update
@@ -48,14 +46,16 @@ rm mumble.tar.gz
 pushd vcpkg
 # Fix for ICE hash
 git apply "$WORKING_DIR/0001-fix-sha512-hash-for-zeroc-ice-mumble.patch"
+# Use Qt5
+git apply "$WORKING_DIR/0002-use-qt5-for-qt.patch"
 ./build_mumble_dependencies.sh
 export MUMBLE_VCPKG_ROOT=$(pwd)
 popd
 
 pushd "mumble-$MUMBLE_TAG"
 cmake -Bbuild -G "Unix Makefiles" \
-    -DCMAKE_TOOLCHAIN_FILE="${MUMBLE_VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake" \
-    -DIce_HOME="${MUMBLE_VCPKG_ROOT}/installed/x64-linux" \
+    -DCMAKE_TOOLCHAIN_FILE="${MUMBLE_VCPKG_ROOT}/${MUMBLE_ENV_NAME}/scripts/buildsystems/vcpkg.cmake" \
+    -DIce_HOME="${MUMBLE_VCPKG_ROOT}/${MUMBLE_ENV_NAME}/installed/x64-linux" \
     -DVCPKG_TARGET_TRIPLET="x64-linux" \
     -Dstatic=ON \
     -DCMAKE_BUILD_TYPE=Release \
