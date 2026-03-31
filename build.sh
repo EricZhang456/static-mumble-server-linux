@@ -45,11 +45,11 @@ tar xf mumble.tar.gz
 rm mumble.tar.gz
 
 pushd vcpkg
-MUMBLE_ENV_NAME="mumble_env.x64-linux.$( date +"%Y-%m-%d" ).$( git rev-parse --short --verify HEAD )"
 # Fix for ICE hash
 git apply "$WORKING_DIR/0001-fix-sha512-hash-for-zeroc-ice-mumble.patch"
 # Use Qt5
 git apply "$WORKING_DIR/0002-use-qt5-for-qt.patch"
+MUMBLE_ENV_NAME="mumble_env.x64-linux.$( date +"%Y-%m-%d" ).$( git rev-parse --short --verify HEAD )"
 ./build_mumble_dependencies.sh
 MUMBLE_VCPKG_ROOT=$(pwd)
 popd
