@@ -75,6 +75,7 @@ popd
 mkdir mumble-packagedir
 
 mv "mumble-builddir/mumble-$MUMBLE_TAG/build/mumble-server" mumble-packagedir
+strip mumble-packagedir/mumble-server
 
 tar czf "mumble-server.tar.gz" -C mumble-packagedir .
 
