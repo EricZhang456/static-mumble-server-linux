@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+
+set -x
+set -e
+
+WORKING_DIR=$(pwd)
+MUMBLE_TAG="1.5.857"
+# To be used later when mumble switches to Qt6
+#MUMBLE_ENV_DATE="2025-08"
+#MUMBLE_ENV="mumble_env.x64-linux.8834a23a8e"
+MUMBLE_ENV_TAG="2025-07_qt5"
+
+sudo apt-get -y update
+sudo apt-get -y upgrade
+
+# https://github.com/mumble-voip/mumble/blob/master/.github/actions/install-dependencies/install_ubuntu_static_x86_64.sh
+sudo apt-get -y install \
+    build-essential \
+    curl \
+    zip \
+    libtirpc-dev \
+    unzip \
+    tar \
+    g++-multilib \
+    `# Still required for qtbase vcpkg package` \
+    '^libxcb.*-dev' libx11-xcb-dev libglu1-mesa-dev libxrender-dev libxi-dev libxkbcommon-dev libxkbcommon-x11-dev libegl1-mesa-dev \
+    `# TODO: can we get rid of these by replacing with vcpkg packages?` \
+    libsm-dev \
+    libspeechd-dev \
+    libavahi-compat-libdnssd-dev \
+    libasound2-dev \
+    linux-libc-dev \
+    flex \
+    libltdl-dev \
+    autoconf-archive \
+    libbluetooth-dev \
+    libdbus-1-dev
+
+mkdir mumble-builddir
+
+pushd mumble-builddir
+git clone --branch "$MUMBLE_ENV_TAG" --depth 1 https://github.com/mumble-voip/vcpkg
+wget -O mumble.tar.gz "https://github.com/mumble-voip/mumble/releases/download/v$MUMBLE_TAG/mumble-$MUMBLE_TAG.tar.gz"
+
+tar xf mumble.tar.gz
+rm mumble.tar.gz
+
+pushd vcpkg
+# Fix for ICE hash
+git apply "$WORKING_DIR/0001-fix-sha512-hash-for-zeroc-ice-mumble.patch"
+./build_mumble_dependencies.sh
+export MUMBLE_VCPKG_ROOT=$(pwd)
+popd
+
+pushd "mumble-$MUMBLE_TAG"
+cmake -Bbuild -G "Unix Makefiles" \
+    -DCMAKE_TOOLCHAIN_FILE="${MUMBLE_VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake" \
+    -DIce_HOME="${MUMBLE_VCPKG_ROOT}/installed/x64-linux" \
+    -DVCPKG_TARGET_TRIPLET="x64-linux" \
+    -Dstatic=ON \
+    -DCMAKE_BUILD_TYPE=Release \
+    -Dclient=OFF \
+    -Dserver=ON \
+    -Dserver=ON \
+    -Dice=ON \
+    -Dtests=OFF \
+    -Dwarnings-as-errors=OFF \
+    -Dzeroconf=OFF
+
+cmake --build build -- -j $(nproc)
+popd
+popd
+
+mkdir mumble-packagedir
+
+mv "mumble-builddir/mumble-$MUMBLE_TAG/build/mumble-server" mumble-packagedir
+
+tar czf "mumble-server.tar.gz" -C mumble-packagedir .
+
+rm -rf mumble-builddir
+rm -rf mumble-packagedir
+

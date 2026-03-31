@@ -1,0 +1,26 @@
+From d0f45ad3fc458860ac0320560add4561bd92901b Mon Sep 17 00:00:00 2001
+From: Eric Zhang <ericzhang456@disroot.org>
+Date: Tue, 31 Mar 2026 12:50:06 +0800
+Subject: [PATCH] fix sha512 hash for zeroc-ice-mumble
+
+Signed-off-by: Eric Zhang <ericzhang456@disroot.org>
+---
+ ports/zeroc-ice-mumble/portfile.cmake | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/ports/zeroc-ice-mumble/portfile.cmake b/ports/zeroc-ice-mumble/portfile.cmake
+index bb7c4c5b60..2f33752fe3 100644
+--- a/ports/zeroc-ice-mumble/portfile.cmake
++++ b/ports/zeroc-ice-mumble/portfile.cmake
+@@ -7,7 +7,7 @@ vcpkg_from_github(
+ 	OUT_SOURCE_PATH SOURCE_PATH
+ 	REPO mumble-voip/ice
+ 	REF 3.7
+-	SHA512 205b3ce0fa0ecc157944dd4dae5d9c68c54f07e7b0b8012beea83d83870bb7df8c21f930b6239b6c0dd49fb758ce9a58b1e2670d0de14349a582c58f73a2fafa
++	SHA512 d01fb71d9f6c09794bba579125991d38c388c48c816290b83ccb19529885f7319de2211fb52906b424989e34b30985b5c49684c954d01020b4e689cbda08702a
+ )
+ 
+ if("cpp11" IN_LIST FEATURES)
+-- 
+2.53.0.windows.1
+
