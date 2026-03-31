@@ -33,7 +33,8 @@ sudo apt-get -y install \
     autoconf-archive \
     libbluetooth-dev \
     libdbus-1-dev \
-    libxtst-dev
+    libxtst-dev \
+    libedit-dev
 
 mkdir mumble-builddir
 
