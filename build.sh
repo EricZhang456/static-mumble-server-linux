@@ -65,7 +65,6 @@ cmake -Bbuild -G "Unix Makefiles" \
     -DCMAKE_BUILD_TYPE=Release \
     -Dclient=OFF \
     -Dserver=ON \
-    -Dserver=ON \
     -Dice=ON \
     -Dtests=OFF \
     -Dwarnings-as-errors=OFF \
