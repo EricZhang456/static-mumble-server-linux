@@ -5,6 +5,7 @@ set -e
 
 WORKING_DIR=$(pwd)
 MUMBLE_TAG="1.5.857"
+MUMBLE_BUILD_NUMBER="857"
 MUMBLE_ENV_TAG="2025-07_qt5"
 
 sudo apt-get -y update
@@ -58,6 +59,7 @@ pushd "mumble-$MUMBLE_TAG"
 cmake -Bbuild -G "Unix Makefiles" \
     -DCMAKE_TOOLCHAIN_FILE="${MUMBLE_VCPKG_ROOT}/${MUMBLE_ENV_NAME}/scripts/buildsystems/vcpkg.cmake" \
     -DIce_HOME="${MUMBLE_VCPKG_ROOT}/${MUMBLE_ENV_NAME}/installed/x64-linux" \
+    -DBUILD_NUMBER="$MUMBLE_BUILD_NUMBER" \
     -DVCPKG_TARGET_TRIPLET="x64-linux" \
     -Dstatic=ON \
     -DCMAKE_BUILD_TYPE=Release \
