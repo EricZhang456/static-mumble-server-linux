@@ -5,7 +5,6 @@ set -e
 
 WORKING_DIR=$(pwd)
 MUMBLE_TAG="1.5.857"
-MUMBLE_ENV_NAME="mumble_env.x64-linux.2026-03-31.a22c514"
 MUMBLE_ENV_TAG="2025-07_qt5"
 
 sudo apt-get -y update
@@ -46,12 +45,13 @@ tar xf mumble.tar.gz
 rm mumble.tar.gz
 
 pushd vcpkg
+MUMBLE_ENV_NAME="mumble_env.x64-linux.$( git rev-parse --short --verify HEAD )"
 # Fix for ICE hash
 git apply "$WORKING_DIR/0001-fix-sha512-hash-for-zeroc-ice-mumble.patch"
 # Use Qt5
 git apply "$WORKING_DIR/0002-use-qt5-for-qt.patch"
 ./build_mumble_dependencies.sh
-export MUMBLE_VCPKG_ROOT=$(pwd)
+MUMBLE_VCPKG_ROOT=$(pwd)
 popd
 
 pushd "mumble-$MUMBLE_TAG"
