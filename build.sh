@@ -3,6 +3,9 @@
 set -x
 set -e
 
+export CC=clang
+export CXX=clang++
+
 WORKING_DIR=$(pwd)
 MUMBLE_TAG="1.6.870"
 MUMBLE_BUILD_NUMBER="870"
@@ -16,6 +19,7 @@ sudo apt-get -y upgrade
 sudo apt-get -y install \
     build-essential \
     curl \
+    clang \
     zip \
     libtirpc-dev \
     unzip \
@@ -66,7 +70,8 @@ cmake -Bbuild -G "Unix Makefiles" \
     -Dice=ON \
     -Dtests=OFF \
     -Dwarnings-as-errors=OFF \
-    -Dzeroconf=OFF
+    -Dzeroconf=OFF \
+    -Dbundled-cli11=OFF
 
 cmake --build build -- -j $(nproc)
 popd
@@ -81,4 +86,3 @@ tar czf "mumble-server.tar.gz" -C mumble-packagedir .
 
 rm -rf mumble-builddir
 rm -rf mumble-packagedir
-
