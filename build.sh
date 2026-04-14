@@ -4,9 +4,10 @@ set -x
 set -e
 
 WORKING_DIR=$(pwd)
-MUMBLE_TAG="1.5.857"
-MUMBLE_BUILD_NUMBER="857"
-MUMBLE_ENV_TAG="2025-07_qt5"
+MUMBLE_TAG="1.6.870"
+MUMBLE_BUILD_NUMBER="870"
+MUMBLE_ENV_TAG="2026-02"
+MUMBLE_ENV_NAME="mumble_env.x64-linux.b1fe4a4257"
 
 sudo apt-get -y update
 sudo apt-get -y upgrade
@@ -39,26 +40,23 @@ sudo apt-get -y install \
 mkdir mumble-builddir
 
 pushd mumble-builddir
-git clone --branch "$MUMBLE_ENV_TAG" --depth 1 https://github.com/mumble-voip/vcpkg
 wget -O mumble.tar.gz "https://github.com/mumble-voip/mumble/releases/download/v$MUMBLE_TAG/mumble-$MUMBLE_TAG.tar.gz"
 
 tar xf mumble.tar.gz
 rm mumble.tar.gz
 
-pushd vcpkg
-# Fix for ICE hash
-git apply "$WORKING_DIR/0001-fix-sha512-hash-for-zeroc-ice-mumble.patch"
-# Use Qt5
-git apply "$WORKING_DIR/0002-use-qt5-for-qt.patch"
-MUMBLE_ENV_NAME="mumble_env.x64-linux.$( date +"%Y-%m-%d" ).$( git rev-parse --short --verify HEAD )"
-./build_mumble_dependencies.sh
+wget -O vcpkg.tar.xz "https://github.com/mumble-voip/vcpkg/releases/download/$MUMBLE_ENV_TAG/$MUMBLE_ENV_NAME.tar.xz"
+tar xf vcpkg.tar.xz
+rm vcpkg.tar.xz
+
+pushd "$MUMBLE_ENV_NAME"
 MUMBLE_VCPKG_ROOT=$(pwd)
 popd
 
 pushd "mumble-$MUMBLE_TAG"
 cmake -Bbuild -G "Unix Makefiles" \
-    -DCMAKE_TOOLCHAIN_FILE="${MUMBLE_VCPKG_ROOT}/${MUMBLE_ENV_NAME}/scripts/buildsystems/vcpkg.cmake" \
-    -DIce_HOME="${MUMBLE_VCPKG_ROOT}/${MUMBLE_ENV_NAME}/installed/x64-linux" \
+    -DCMAKE_TOOLCHAIN_FILE="${MUMBLE_VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake" \
+    -DIce_HOME="${MUMBLE_VCPKG_ROOT}/installed/x64-linux" \
     -DBUILD_NUMBER="$MUMBLE_BUILD_NUMBER" \
     -DVCPKG_TARGET_TRIPLET="x64-linux" \
     -Dstatic=ON \
