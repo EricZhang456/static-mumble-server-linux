@@ -4,8 +4,8 @@ set -x
 set -e
 
 WORKING_DIR=$(pwd)
-MUMBLE_TAG="1.5.857"
-MUMBLE_BUILD_NUMBER="857"
+MUMBLE_TAG="1.5.901"
+MUMBLE_BUILD_NUMBER="901"
 MUMBLE_ENV_TAG="2025-07_qt5"
 
 sudo apt-get -y update
