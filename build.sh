@@ -83,4 +83,3 @@ tar czf "mumble-server.tar.gz" -C mumble-packagedir .
 
 rm -rf mumble-builddir
 rm -rf mumble-packagedir
-
