@@ -3,9 +3,6 @@
 set -x
 set -e
 
-export CC=clang
-export CXX=clang++
-
 WORKING_DIR=$(pwd)
 MUMBLE_TAG="1.5.915"
 MUMBLE_BUILD_NUMBER="915"
@@ -18,6 +15,7 @@ sudo apt-get -y upgrade
 sudo apt-get -y install \
     build-essential \
     curl \
+    clang \
     zip \
     libtirpc-dev \
     unzip \
@@ -61,6 +59,8 @@ popd
 pushd "mumble-$MUMBLE_TAG"
 cmake -Bbuild -G "Unix Makefiles" \
     -DCMAKE_TOOLCHAIN_FILE="${MUMBLE_VCPKG_ROOT}/${MUMBLE_ENV_NAME}/scripts/buildsystems/vcpkg.cmake" \
+    -DCMAKE_C_COMPILER=clang \
+    -DCMAKE_CXX_COMPILER=clang++ \
     -DIce_HOME="${MUMBLE_VCPKG_ROOT}/${MUMBLE_ENV_NAME}/installed/x64-linux" \
     -DBUILD_NUMBER="$MUMBLE_BUILD_NUMBER" \
     -DVCPKG_TARGET_TRIPLET="x64-linux" \
