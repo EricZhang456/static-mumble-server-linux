@@ -3,6 +3,9 @@
 set -x
 set -e
 
+export CC=clang
+export CXX=clang++
+
 WORKING_DIR=$(pwd)
 MUMBLE_TAG="1.5.915"
 MUMBLE_BUILD_NUMBER="915"
@@ -67,8 +70,7 @@ cmake -Bbuild -G "Unix Makefiles" \
     -Dserver=ON \
     -Dice=ON \
     -Dtests=OFF \
-    -Dwarnings-as-errors=OFF \
-    -Dzeroconf=OFF
+    -Dwarnings-as-errors=OFF
 
 cmake --build build -- -j $(nproc)
 popd
