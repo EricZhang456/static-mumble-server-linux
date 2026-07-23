@@ -3,9 +3,6 @@
 set -x
 set -e
 
-export CC=clang
-export CXX=clang++
-
 WORKING_DIR=$(pwd)
 MUMBLE_TAG="1.6.870"
 MUMBLE_BUILD_NUMBER="870"
@@ -60,6 +57,8 @@ popd
 pushd "mumble-$MUMBLE_TAG"
 cmake -Bbuild -G "Unix Makefiles" \
     -DCMAKE_TOOLCHAIN_FILE="${MUMBLE_VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake" \
+    -DCMAKE_C_COMPILER=clang \
+    -DCMAKE_CXX_COMPILER=clang++ \
     -DIce_HOME="${MUMBLE_VCPKG_ROOT}/installed/x64-linux" \
     -DBUILD_NUMBER="$MUMBLE_BUILD_NUMBER" \
     -DVCPKG_TARGET_TRIPLET="x64-linux" \
