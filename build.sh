@@ -70,7 +70,6 @@ cmake -Bbuild -G "Unix Makefiles" \
     -Dice=ON \
     -Dtests=OFF \
     -Dwarnings-as-errors=OFF \
-    -Dzeroconf=OFF \
     -Dbundled-cli11=OFF
 
 cmake --build build -- -j $(nproc)
