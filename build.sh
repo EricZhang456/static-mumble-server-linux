@@ -79,7 +79,12 @@ popd
 mkdir mumble-packagedir
 
 mv "mumble-builddir/mumble-$MUMBLE_TAG/build/mumble-server" mumble-packagedir
-strip mumble-packagedir/mumble-server
+
+pushd mumble-packagedir
+objcopy --only-keep-debug mumble-server mumble-server.dbg
+objcopy --strip-debug mumble-server
+objcopy --add-gnu-debuglink=mumble-server.dbg mumble-server
+popd
 
 tar czf "mumble-server.tar.gz" -C mumble-packagedir .
 
