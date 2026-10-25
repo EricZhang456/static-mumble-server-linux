@@ -4,7 +4,8 @@ set -x
 set -e
 
 WORKING_DIR=$(pwd)
-MUMBLE_TAG="1.6.1001"
+MUMBLE_TAG="v1.6.0-alpha2"
+MUMBLE_RELEASE="1.6.1001"
 MUMBLE_BUILD_NUMBER="1001"
 MUMBLE_ENV_TAG="2026-09"
 MUMBLE_ENV_NAME="mumble_env.x64-linux.9a25cab914"
@@ -41,7 +42,7 @@ sudo apt-get -y install \
 mkdir mumble-builddir
 
 pushd mumble-builddir
-wget -O mumble.tar.gz "https://github.com/mumble-voip/mumble/releases/download/v$MUMBLE_TAG/mumble-$MUMBLE_TAG.tar.gz"
+wget -O mumble.tar.gz "https://github.com/mumble-voip/mumble/releases/download/$MUMBLE_TAG/mumble-$MUMBLE_RELEASE.tar.gz"
 
 tar xf mumble.tar.gz
 rm mumble.tar.gz
@@ -54,7 +55,7 @@ pushd "$MUMBLE_ENV_NAME"
 MUMBLE_VCPKG_ROOT=$(pwd)
 popd
 
-pushd "mumble-$MUMBLE_TAG"
+pushd "mumble-$MUMBLE_RELEASE"
 cmake -Bbuild -G "Unix Makefiles" \
     -DCMAKE_TOOLCHAIN_FILE="${MUMBLE_VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake" \
     -DCMAKE_C_COMPILER=clang \
@@ -77,7 +78,7 @@ popd
 
 mkdir mumble-packagedir
 
-mv "mumble-builddir/mumble-$MUMBLE_TAG/build/mumble-server" mumble-packagedir
+mv "mumble-builddir/mumble-$MUMBLE_RELEASE/build/mumble-server" mumble-packagedir
 
 pushd mumble-packagedir
 objcopy --only-keep-debug mumble-server mumble-server.dbg
