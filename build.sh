@@ -70,7 +70,8 @@ cmake -Bbuild -G "Unix Makefiles" \
     -Dice=ON \
     -Dtests=OFF \
     -Dwarnings-as-errors=OFF \
-    -Dbundled-cli11=OFF
+    -Dbundled-cli11=OFF \
+    -Dbundled-spdlog=OFF
 
 cmake --build build -- -j $(nproc)
 popd
