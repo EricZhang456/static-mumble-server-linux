@@ -4,10 +4,10 @@ set -x
 set -e
 
 WORKING_DIR=$(pwd)
-MUMBLE_TAG="1.6.870"
-MUMBLE_BUILD_NUMBER="870"
-MUMBLE_ENV_TAG="2026-02"
-MUMBLE_ENV_NAME="mumble_env.x64-linux.b1fe4a4257"
+MUMBLE_TAG="1.6.1001"
+MUMBLE_BUILD_NUMBER="1001"
+MUMBLE_ENV_TAG="2026-09"
+MUMBLE_ENV_NAME="mumble_env.x64-linux.9a25cab914"
 
 sudo apt-get -y update
 sudo apt-get -y upgrade
